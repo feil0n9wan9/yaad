@@ -6,15 +6,18 @@
 # Yet Another Andorid Decompiler
 #### Migrated from [RichieWan9/decompile](https://github.com/RichieWan9/decompile)
 
-## Introdution
-YAAD is yet another andorid decompiler for reverse engineering android apk, framework jar or optimized apk/odex from ROM built with user tag. When developing on platform sdk, android build tools export a apk which contains all things(resources, dex(code), certificate, etc), but in case developing on Android Open Source Project(known as AOSP), it divides into three cases: normal apk, framework jar containing only code and optimized apk/odex which separates code into a odex file from resources in apk. YAAD can detect and handle all these cases automatically.
+
+## Introduction
+YAAD is yet another andorid decompiler for reverse engineering android apk, framework jar or optimized apk(odex) from ROM built with user tag. When developing on platform sdk, android build tools export a apk which contains all things(resources, dex(code), certificate, etc), but in case developing on Android Open Source Project(known as AOSP), it divides into three cases: normal apk, framework jar containing only code and optimized apk(odex) which separates code into a odex file from resources in apk. YAAD can detect and handle all these cases automatically.
+
 
 ## Usage
 ```bash
 USAGE: yaad [options] <apk|jar|odex>
 
 OPTIONS:
--s, --system=<directory>        The directory to look for framework odex files when decomile a odex file. Defaults to the $YAADROOT/system directory.
+-s, --system=<directory>        The directory to look for framework odex files when decomile a odex file.
+                                Defaults to the $YAADROOT/system directory.
 	
 -h, --help                      Print this help and exit.
 ```
@@ -24,14 +27,13 @@ To decompile a odex file, it also needs a few of framework odex files. What fram
 
 ## TODO
 Things that i'd like to do:
-* ✓ reverse android framework code formed in jar
+* ✓ decomile android apk, framework jar and optimized apk(odex)
 * implemeted as POSIX compatible function
 * should work on sh, dash, bash, ksh, zsh
-* should work on Windows
 * dependencies can upgrade independently
 * improve error handling
 * make it rock!
 
 
 ## License
-Copyright (c) 2016 Feilong Wang. Licensed under the [Apache License 2.0](https://github.com/feil0n9wan9/yaad/blob/master/LICENSE)
+Copyright (c) 2016 Feilong Wang. Licensed under the [Apache License Verson 2.0](https://github.com/feil0n9wan9/yaad/blob/master/LICENSE)

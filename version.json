@@ -1,0 +1,9 @@
+{ "version": {
+    "apktool": "1.5.2",
+    "baksmali": "2.0b6",
+    "smali": "2.0b6",
+    "dex2jar": "0.9.15",
+    "jad.linux.static": "158e",
+    "jd-gui.linux.i686": "0.3.5"
+    }
+}

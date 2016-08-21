@@ -42,15 +42,16 @@ DEX2JARTOOL="${progdir}/dex2jar/d2j-dex2jar.sh"
 JAR2JAVATOOL="${progdir}/jad/jad"
 
 
-function usage() {
+yaad_usage() {
 cat <<EOF
+
 Decompile a android apk, framework jar or a optimized apk/odex.
 
 Usage: yaad [options] <apk|jar|odex>
 
   -s, --system=<directory>     
                     The directory to look for framework odex files when decomile
-                    a odex file. Defaults to the $YAADROOT/system directory.
+                    a odex file. Defaults to the YAADROOT/system directory.
 
   -h, --help        Print this help and exit
 
@@ -75,13 +76,10 @@ Examples
   yaad service.jar
   yaad -s .. Launcher.odex
 
-Author
-  Written by Feilong Wang
-
 EOF
 }
 
-function dex2code() {
+yaad_dex2code() {
 	echo 
 	echo "PHASE : Dex2code"
 	echo
@@ -107,7 +105,7 @@ function dex2code() {
 	return "$ret"
 }
 
-function reverse_apk() {
+yaad_reverse_apk() {
 	if [ -z "$FILENAME" ]; then
 		echo "Error: file name is NULL."
 		return 1;
@@ -161,7 +159,7 @@ function reverse_apk() {
 			fi
 		done
 		if [ -r "$pOdexFile" ]; then
-			reverse_odex "$pOdexFile"
+			yaad_reverse_odex "$pOdexFile"
 			return $?
 		fi
 
@@ -171,7 +169,7 @@ function reverse_apk() {
 		return 1
 	else
 		local pDexFile=`pwd`/classes.dex
-		dex2code "$pDexFile"
+		yaad_dex2code "$pDexFile"
 		local ret=$?
 		rm classes.dex
 		return "$ret"
@@ -181,7 +179,7 @@ function reverse_apk() {
 	
 }
 
-function reverse_odex() {
+yaad_reverse_odex() {
 	echo
 	echo "PHASE : Odex2dex"
 	echo
@@ -208,7 +206,7 @@ function reverse_odex() {
 	fi
 
 	local tmpfile=`pwd`/classes.dex
-	dex2code "$tmpfile"
+	yaad_dex2code "$tmpfile"
 	local ret=$?
 
 	rm -rf out
@@ -216,7 +214,7 @@ function reverse_odex() {
 	return "$ret";
 }
 
-function reverse_jar() {
+yaad_reverse_jar() {
 	if [ ! -e "$FILENAME" ]; then
 		# Whatever create direcotry
 		mkdir "$FILENAME"
@@ -234,7 +232,7 @@ function reverse_jar() {
 
 	if [ $? = 0 ]; then
 		local pDexFile=`pwd`/classes.dex
-		dex2code "$pDexFile"
+		yaad_dex2code "$pDexFile"
 		local ret=$?
 		rm classes.dex
 		return "$ret"
@@ -258,7 +256,7 @@ eval set -- "$TEMP"
 
 while true ; do
 	case "$1" in
-		-h|--help) usage ; exit 0 ;;
+		-h|--help) yaad_usage ; exit 0 ;;
 
 		-s|--system) 
 			if [ -d "$2" -a -r "$2" ]; then
@@ -294,15 +292,15 @@ cd "$oldwd"
 
 # Whether it is formed in xx.apk/odex
 if expr "$FULLNAME" : '.*\.\([aA][pP][kK]\)$' > /dev/null; then
-	reverse_apk 
+	yaad_reverse_apk 
 elif expr "$FULLNAME" : '.*\.\([jJ][aA][rR]\)$' > /dev/null; then
-	reverse_jar 
+	yaad_reverse_jar 
 elif expr "$FULLNAME" : '.*\.\([oO][dD][eE][xX]\)$' > /dev/null; then
 	if [ ! -e "$FILENAME" ]; then
 		mkdir "$FILENAME"
 	fi
 	cd "$FILENAME"
-	reverse_odex "$FILEPATH"
+	yaad_reverse_odex "$FILEPATH"
 else
 	echo "The decompiled file is not supported."
 	exit 1
